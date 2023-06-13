@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import ModalComponent from "../Modal";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 import AddTaskForm from "../AddTaskForm";
 import { Ttask, Ttaskpayload } from "../../utils/type";
@@ -26,6 +27,8 @@ const TodoList = ({
   const [editMode, setEditMode] = useState<boolean>(false);
   const [expand, setExpand] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const context: any = useContext(AppContext);
   const { actions } = context || {};
@@ -63,6 +66,7 @@ const TodoList = ({
 
   const handleLogout = () => {
     actions.signOut();
+    navigate("/");
   };
 
   useEffect(() => {
