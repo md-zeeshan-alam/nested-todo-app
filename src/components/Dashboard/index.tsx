@@ -11,6 +11,17 @@ const Dashboard = () => {
   const context: any = useContext(AppContext);
   const { store, actions } = context;
 
+  const navigate = useNavigate();
+
+  // to check the token
+  useEffect(() => {
+    console.log({ store });
+
+    if (!store?.token) {
+      navigate("/");
+    }
+  }, []);
+
   const handleInsertNode = ({ taskId, value }: Ttaskpayload) => {
     actions.addTask({ taskId, value });
   };
