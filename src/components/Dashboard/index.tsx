@@ -8,17 +8,8 @@ import TodoList from "../TodoList";
 import "./styles.css";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
   const context: any = useContext(AppContext);
   const { store, actions } = context;
-
-  // to check the token
-  useEffect(() => {
-    if (!store?.token) {
-      navigate("/");
-    }
-  }, [store?.token]);
 
   const handleInsertNode = ({ taskId, value }: Ttaskpayload) => {
     actions.addTask({ taskId, value });

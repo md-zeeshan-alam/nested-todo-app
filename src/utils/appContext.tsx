@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { TSignIn, TUser, Ttaskpayload } from "./type";
 import useNode from "../hooks/useNode";
 
@@ -18,6 +19,8 @@ interface IContextWrapper {
 }
 export const ContextWrapper = ({ children }: IContextWrapper) => {
   const [store, setStore] = useState<TUser>(initialData);
+  const navigate = useNavigate();
+
   const [actions, _setActions] = useState<any>({
     addTask: ({ taskId, value }: Ttaskpayload) =>
       handleInsertNode({ taskId, value }),
@@ -40,6 +43,7 @@ export const ContextWrapper = ({ children }: IContextWrapper) => {
     localStorage.removeItem("jwt-token");
     const data = { ...store, username: "", password: "", token: "" };
     setStore(data);
+    navigate("/");
   };
 
   const handleInsertNode = ({ taskId, value }: Ttaskpayload) => {
