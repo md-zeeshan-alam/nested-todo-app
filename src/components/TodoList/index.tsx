@@ -34,20 +34,24 @@ const TodoList = ({
   const { actions } = context || {};
 
   const onAddTask = () => {
-    if (editMode) {
-      handleEditNode({
-        taskId: task.id,
-        value: input,
-      });
+    if (!input) {
+      window.alert("Please enter the task");
     } else {
-      setExpand(true);
-      handleInsertNode({ taskId: task.id, value: input });
+      if (editMode) {
+        handleEditNode({
+          taskId: task.id,
+          value: input,
+        });
+      } else {
+        setExpand(true);
+        handleInsertNode({ taskId: task.id, value: input });
+      }
+      setInput("");
+
+      setModalOpen(false);
+
+      if (editMode) setEditMode(false);
     }
-    setInput("");
-
-    setModalOpen(false);
-
-    if (editMode) setEditMode(false);
   };
 
   const handleEdit = (value: string) => {
@@ -87,43 +91,56 @@ const TodoList = ({
       </ModalComponent>
 
       {task?.id === 1 ? (
-        <div className="dashboardHeader">
-          <button className="btn" onClick={() => setModalOpen(true)}>
-            Add Task
-          </button>
-          <p className="logout" onClick={handleLogout}>
-            Logout
-          </p>
-        </div>
-      ) : (
-        <div className="taskCard">
-          <div className="task">
-            {task?.task?.length ? (
-              expand ? (
-                <MdKeyboardArrowUp
-                  style={{ fontSize: "20px" }}
-                  onClick={() => setExpand(false)}
-                />
-              ) : (
-                <MdKeyboardArrowDown
-                  style={{ fontSize: "20px" }}
-                  onClick={() => setExpand(true)}
-                />
-              )
-            ) : null}
-            <h3 className="taskValue">{task.value}</h3>
-          </div>
-          <div className="actionBtnWrapper">
-            <AiFillEdit
-              style={{ fontSize: "20px" }}
-              onClick={() => handleEdit(task.value)}
-            />
-            <AiFillDelete style={{ fontSize: "20px" }} onClick={handleDelete} />
-            <button className="addSubTaskBtn" onClick={handleSubTask}>
-              Add Subtask
+        <>
+          <div className="dashboardHeader">
+            <button className="btn" onClick={() => setModalOpen(true)}>
+              Add Task
             </button>
+            <p className="logout" onClick={handleLogout}>
+              Logout
+            </p>
           </div>
-        </div>
+          {!task.task?.length ? (
+            <h1 style={{ textAlign: "center", padding: "0 25px" }}>
+              No Task Available
+            </h1>
+          ) : null}
+        </>
+      ) : (
+        <>
+          <div className="taskCard">
+            <div className="task">
+              {task?.task?.length ? (
+                expand ? (
+                  <MdKeyboardArrowUp
+                    style={{ fontSize: "20px" }}
+                    onClick={() => setExpand(false)}
+                  />
+                ) : (
+                  <MdKeyboardArrowDown
+                    style={{ fontSize: "20px" }}
+                    onClick={() => setExpand(true)}
+                  />
+                )
+              ) : null}
+              <h3 className="taskValue">{task.value}</h3>
+            </div>
+            <div className="actionBtnWrapper">
+              <AiFillEdit
+                style={{ fontSize: "20px" }}
+                onClick={() => handleEdit(task.value)}
+              />
+              <AiFillDelete
+                style={{ fontSize: "20px" }}
+                onClick={handleDelete}
+              />
+              <button className="addSubTaskBtn" onClick={handleSubTask}>
+                Add Subtask
+              </button>
+            </div>
+          </div>
+          {!task.task?.length ? <hr style={{ margin: "10px 0" }} /> : null}
+        </>
       )}
 
       <div
